@@ -159,6 +159,42 @@ if scantype == "4":
             filteredp.append(x)
             print(f"Port {x}: Open | Filtered")
 
+
+#Wegschrijven database
+
+conn = sqlite3.connect("scan_resultaten.db")
+
+c = conn.cursor()
+
+#Maakt tables aan in database
+c.execute("""CREATE TABLE IF NOT EXISTS target (
+            target text)""")
+c.execute("""CREATE TABLE IF NOT EXISTS scantype (
+            type_scan text)""")
+c.execute("""CREATE TABLE IF NOT EXISTS portrange (
+            begin integer,eind INTEGER)""")
+c.execute("""CREATE TABLE IF NOT EXISTS open (
+            open_port INTEGER)""")
+c.execute("""CREATE TABLE IF NOT EXISTS gesloten (
+            gesloten_port INTEGER)""")
+c.execute("""CREATE TABLE IF NOT EXISTS filtered (
+            filtered_port INTEGER)""")
+
+dbopen = [(o,) for o in openp]
+dbgesloten =[(g,) for g in geslotenp]
+dbfiltered = [(f,) for f in filteredp]
+
+#Voegt de data in de database
+c.execute('INSERT INTO target VALUES(?)',(ip,))
+c.execute('INSERT INTO scantype VALUES(?)',(scantype,))
+c.execute("INSERT INTO portrange VALUES(?,?)",(porta,portb,))
+c.executemany("INSERT INTO open VALUES(?)",(dbopen))
+c.executemany("INSERT INTO gesloten VALUES(?)",(dbgesloten))
+c.executemany("INSERT INTO filtered VALUES(?)",(dbfiltered))
+conn.commit()
+
+conn.close()
+
 # Wegschrijven XML/JSON
 
 def wegschrijven():
