@@ -195,6 +195,8 @@ conn.commit()
 
 conn.close()
 
+#geprobeerd middels een ERD een goed werkende datbase te maken, dit is niet gelukt.
+
 # Wegschrijven XML/JSON
 
 def wegschrijven():
